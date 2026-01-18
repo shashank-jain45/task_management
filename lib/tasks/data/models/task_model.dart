@@ -1,26 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:task_management/tasks/domain/entities/task_entity.dart';
 
-part 'task_model.freezed.dart';
 part 'task_model.g.dart';
 
-@freezed
-class TaskModel with _$TaskModel {
-  const TaskModel._();
+@JsonSerializable()
+class TaskModel extends Equatable {
+  final String id;
+  final String title;
+  final String description;
+  final DateTime dueDate;
+  final String priority; // Store enum as String
+  final bool isCompleted; // Store status as bool for simplicity in JSON
 
-  const factory TaskModel({
-    required String id,
-    required String title,
-    required String description,
-    required DateTime dueDate,
-    required String priority, // Store enum as String
-    required bool isCompleted, // Store status as bool for simplicity in JSON
-    required String userId,
-  }) = _TaskModel;
+  const TaskModel({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.dueDate,
+    required this.priority,
+    required this.isCompleted,
+  });
 
   factory TaskModel.fromJson(Map<String, dynamic> json) =>
       _$TaskModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TaskModelToJson(this);
 
   factory TaskModel.fromEntity(TaskEntity entity) {
     return TaskModel(
@@ -30,7 +36,6 @@ class TaskModel with _$TaskModel {
       dueDate: entity.dueDate,
       priority: entity.priority.name,
       isCompleted: entity.status == TaskStatus.completed,
-      userId: entity.userId,
     );
   }
 
@@ -45,7 +50,6 @@ class TaskModel with _$TaskModel {
         orElse: () => TaskPriority.medium,
       ),
       status: isCompleted ? TaskStatus.completed : TaskStatus.incomplete,
-      userId: userId,
     );
   }
 
@@ -53,4 +57,32 @@ class TaskModel with _$TaskModel {
     final data = doc.data() as Map<String, dynamic>;
     return TaskModel.fromJson(data).copyWith(id: doc.id);
   }
+
+  TaskModel copyWith({
+    String? id,
+    String? title,
+    String? description,
+    DateTime? dueDate,
+    String? priority,
+    bool? isCompleted,
+  }) {
+    return TaskModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      dueDate: dueDate ?? this.dueDate,
+      priority: priority ?? this.priority,
+      isCompleted: isCompleted ?? this.isCompleted,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+    id,
+    title,
+    description,
+    dueDate,
+    priority,
+    isCompleted,
+  ];
 }

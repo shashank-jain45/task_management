@@ -7,9 +7,8 @@ import 'package:task_management/tasks/presentation/bloc/task_bloc.dart';
 
 class TaskListItem extends StatelessWidget {
   final TaskEntity task;
-  final String userId;
 
-  const TaskListItem({super.key, required this.task, required this.userId});
+  const TaskListItem({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +70,7 @@ class TaskListItem extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => AddTaskScreen(task: task, userId: userId),
+                  builder: (_) => AddTaskScreen(task: task,),
                 ),
               );
             },
@@ -92,7 +91,6 @@ class TaskListItem extends StatelessWidget {
                         dueDate: task.dueDate,
                         priority: task.priority,
                         status: newStatus,
-                        userId: task.userId,
                       );
                       context.read<TaskBloc>().add(UpdateTaskEvent(updated));
                     },

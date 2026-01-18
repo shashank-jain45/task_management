@@ -4,9 +4,8 @@ import 'package:task_management/tasks/presentation/widgets/task_list_item.dart';
 
 class HomeBody extends StatelessWidget {
   final List<TaskEntity> tasks;
-  final String userId;
 
-  const HomeBody({super.key, required this.tasks, required this.userId});
+  const HomeBody({super.key, required this.tasks});
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +37,7 @@ class HomeBody extends StatelessWidget {
                 ),
               ),
             ),
-            ...sectionTasks.map(
-              (task) => TaskListItem(task: task, userId: userId),
-            ),
+            ...sectionTasks.map((task) => TaskListItem(task: task)),
           ],
         );
       },
@@ -77,7 +74,6 @@ class HomeBody extends StatelessWidget {
       grouped.putIfAbsent(key, () => []).add(task);
     }
 
-    // Check specific keys existence to ensure order, or rebuild map in order
     final ordered = <String, List<TaskEntity>>{};
     if (grouped.containsKey('Overdue')) {
       ordered['Overdue'] = grouped['Overdue']!;

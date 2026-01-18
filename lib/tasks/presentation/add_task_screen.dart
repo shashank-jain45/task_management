@@ -7,9 +7,8 @@ import 'package:uuid/uuid.dart';
 
 class AddTaskScreen extends StatefulWidget {
   final TaskEntity? task;
-  final String userId;
 
-  const AddTaskScreen({super.key, this.task, required this.userId});
+  const AddTaskScreen({super.key, this.task});
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
@@ -57,7 +56,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         dueDate: _dueDate,
         priority: _priority,
         status: widget.task?.status ?? TaskStatus.incomplete,
-        userId: widget.userId,
       );
 
       if (widget.task == null) {

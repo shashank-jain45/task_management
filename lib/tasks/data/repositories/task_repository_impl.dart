@@ -51,8 +51,7 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<Either<Failure, void>> deleteTask(String taskId) async {
     try {
       await remoteDataSource.deleteTask(
-        taskId,
-        sl<GlobalContext>().userEntity!.uid,
+        taskId
       );
       return const Right(null);
     } on ServerException catch (e) {

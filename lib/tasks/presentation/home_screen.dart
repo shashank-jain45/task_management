@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: state is TaskLoading
                     ? const Center(child: CircularProgressIndicator())
-                    : HomeBody(tasks: tasks, userId: userId),
+                    : HomeBody(tasks: tasks),
               ),
             ],
           );
@@ -75,9 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (userId.isNotEmpty) {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => AddTaskScreen(userId: userId),
-                ),
+                MaterialPageRoute(builder: (_) => const AddTaskScreen()),
               );
             }
           },

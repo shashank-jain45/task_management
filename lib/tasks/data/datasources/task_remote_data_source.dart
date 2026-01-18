@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:task_management/core/global_context.dart';
+import 'package:task_management/injection_container.dart';
 import 'package:task_management/tasks/data/models/task_model.dart';
 import 'package:task_management/core/error/exception.dart';
 
@@ -6,7 +8,7 @@ abstract class TaskRemoteDataSource {
   Stream<List<TaskModel>> getTasks(String userId);
   Future<void> addTask(TaskModel task);
   Future<void> updateTask(TaskModel task);
-  Future<void> deleteTask(String userId, String taskId);
+  Future<void> deleteTask(String taskId);
 }
 
 class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
@@ -34,7 +36,7 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
     try {
       await firestore
           .collection('users')
-          .doc(task.userId)
+          .doc(sl<GlobalContext>().userEntity!.uid)
           .collection('tasks')
           .doc(task.id)
           .set(task.toJson());
@@ -48,7 +50,7 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
     try {
       await firestore
           .collection('users')
-          .doc(task.userId)
+          .doc(sl<GlobalContext>().userEntity!.uid)
           .collection('tasks')
           .doc(task.id)
           .update(task.toJson());
@@ -58,11 +60,11 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
   }
 
   @override
-  Future<void> deleteTask(String userId, String taskId) async {
+  Future<void> deleteTask(String taskId) async {
     try {
       await firestore
           .collection('users')
-          .doc(userId)
+          .doc(sl<GlobalContext>().userEntity!.uid)
           .collection('tasks')
           .doc(taskId)
           .delete();

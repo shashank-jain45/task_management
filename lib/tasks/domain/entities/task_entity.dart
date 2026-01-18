@@ -11,7 +11,6 @@ class TaskEntity extends Equatable {
   final DateTime dueDate;
   final TaskPriority priority;
   final TaskStatus status;
-  final String userId;
 
   const TaskEntity({
     required this.id,
@@ -20,7 +19,6 @@ class TaskEntity extends Equatable {
     required this.dueDate,
     required this.priority,
     required this.status,
-    required this.userId,
   });
 
   @override
@@ -31,6 +29,5 @@ class TaskEntity extends Equatable {
     dueDate,
     priority,
     status,
-    userId,
   ];
 }
